@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+html,
+body {
+  scroll-behavior: auto; 
+  overscroll-behavior: none;
+   /* cursor: none; */
+}
+
+.font-special{
+  font-family: serif;
+}
+
+
