@@ -6,7 +6,6 @@ import AboutSectionTree from '../components/AboutSectionTree'
 function About() {
   return (
     <>
-  
      <AboutSectionone/>
      <AboutSectionTree/>   
      <AboutSectionTwo/>
