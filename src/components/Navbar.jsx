@@ -184,39 +184,27 @@ function Navbar() {
                     )}
                   </NavLink>
                 ))}
-                <div className="flex items-center justify-center inline- gap-2 bg-[#FFF3E7] border border-[#D8A460]/50 px-3 py-1 rounded-full shadow text-[#3B2C27] font-semibold text-sm">
-                  <FiUser />
-                  <span>{userInfo.name}</span>
-                </div>
+
                 <div className="mt-10 flex flex-col gap-4">
-                  {!userInfo ? (
+                  {userInfo ? (
                     <>
-                      <Button
-                        onClick={() => {
-                          navigate("/login");
-                          setIsOpen(false);
-                        }}
-                      >
-                        <FiLogIn className="inline mr-1" /> Login
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          navigate("/signup");
-                          setIsOpen(false);
-                        }}
-                      >
-                        <FiUserPlus className="inline mr-1" /> Sign Up
+                      <div className="flex items-center justify-center gap-2 bg-[#FFF3E7] border border-[#D8A460]/50 px-3 py-1 rounded-full shadow text-[#3B2C27] font-semibold text-sm">
+                        <FiUser />
+                        <span>{userInfo.name}</span>
+                      </div>
+                      <Button onClick={handleLogout}>
+                        <FiLogOut className="inline mr-1" /> Logout
                       </Button>
                     </>
                   ) : (
-                    <Button
-                      onClick={() => {
-                        handleLogout();
-                        setIsOpen(false);
-                      }}
-                    >
-                      <FiLogOut className="inline mr-1" /> Logout
-                    </Button>
+                    <>
+                      <Button onClick={() => navigate("/login")}>
+                        <FiLogIn className="inline mr-1" /> Login
+                      </Button>
+                      <Button onClick={() => navigate("/signup")}>
+                        <FiUserPlus className="inline mr-1" /> Sign Up
+                      </Button>
+                    </>
                   )}
                 </div>
               </nav>
