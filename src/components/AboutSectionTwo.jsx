@@ -105,7 +105,7 @@ export default function AboutSectionTwo() {
             <img
               src={section.image}
               alt={section.alt}
-              className="w-full max-h-[80vh] rounded-3xl shadow-xl object-cover"
+              className="w-full max-h-[80vh] rounded-3xl shadow-xl object-cover object-center"
             />
           </div>
           <div

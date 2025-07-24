@@ -1,9 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  cartItems: [], // each item: { id, name, price, quantity, image }
-  cartTotal: 0,
+// Load cart state from localStorage if available
+const loadCartFromLocalStorage = () => {
+  try {
+    const cart = localStorage.getItem("cartState");
+    return cart ? JSON.parse(cart) : { cartItems: [], cartTotal: 0, productCount: 0 };
+  } catch (err) {
+    return { cartItems: [], cartTotal: 0, productCount: 0 };
+  }
 };
+
+// Save cart state to localStorage
+const saveCartToLocalStorage = (state) => {
+  try {
+    localStorage.setItem("cartState", JSON.stringify(state));
+  } catch (err) {
+    console.error("Failed to save cart:", err);
+  }
+};
+
+const initialState = loadCartFromLocalStorage();
 
 const cartSlice = createSlice({
   name: "cart",
@@ -20,12 +36,14 @@ const cartSlice = createSlice({
       }
 
       cartSlice.caseReducers.calculateTotal(state);
+      saveCartToLocalStorage(state);
     },
 
     removeFromCart: (state, action) => {
       const productId = action.payload;
       state.cartItems = state.cartItems.filter((item) => item.id !== productId);
       cartSlice.caseReducers.calculateTotal(state);
+      saveCartToLocalStorage(state);
     },
 
     increaseQty: (state, action) => {
@@ -33,6 +51,7 @@ const cartSlice = createSlice({
       const item = state.cartItems.find((item) => item.id === productId);
       if (item) item.quantity += 1;
       cartSlice.caseReducers.calculateTotal(state);
+      saveCartToLocalStorage(state);
     },
 
     decreaseQty: (state, action) => {
@@ -44,16 +63,24 @@ const cartSlice = createSlice({
         state.cartItems = state.cartItems.filter((item) => item.id !== productId);
       }
       cartSlice.caseReducers.calculateTotal(state);
+      saveCartToLocalStorage(state);
     },
 
     clearCart: (state) => {
       state.cartItems = [];
       state.cartTotal = 0;
+      state.productCount = 0;
+      saveCartToLocalStorage(state);
     },
 
     calculateTotal: (state) => {
       state.cartTotal = state.cartItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) =>
+          sum + parseFloat(item.price.replace("$", "")) * item.quantity,
+        0
+      );
+      state.productCount = state.cartItems.reduce(
+        (count, item) => count + item.quantity,
         0
       );
     },

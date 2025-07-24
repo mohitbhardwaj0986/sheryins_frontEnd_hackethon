@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
-import fallbackimg from "../../assets/sliderassets/978440fe09d65d3d1c461e614bd150d5.jpg";
-import { loadProducts, setActiveProduct } from "../../store/reducers/dataReducer";
+import fallbackimg from "../assets/sliderassets/978440fe09d65d3d1c461e614bd150d5.jpg";
+import { loadProducts, setActiveProduct } from "../store/reducers/dataReducer";
+import { addToCart } from "../store/reducers/cartReducer"; // 🛒 Import this
 
 import { FiArrowLeft, FiTag, FiStar, FiCoffee } from "react-icons/fi";
-import Button from "../Button";
+import Button from "../components/Button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,11 +53,12 @@ function SingleProductPage() {
       ScrollTrigger.create({
         trigger: imageRef.current,
         start: "top 85%",
-        onEnter: () => gsap.fromTo(
-          imageRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 1 }
-        ),
+        onEnter: () =>
+          gsap.fromTo(
+            imageRef.current,
+            { opacity: 0 },
+            { opacity: 1, duration: 1 }
+          ),
       });
     }
   }, [activeProduct]);
@@ -70,15 +72,11 @@ function SingleProductPage() {
     );
   }
 
-  const {
-    name,
-    price,
-    image,
-    description,
-    rating,
-    type,
-    offer,
-  } = activeProduct;
+  const { name, price, image, description, rating, type, offer } = activeProduct;
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...activeProduct, quantity: 1 }));
+  };
 
   return (
     <div className="min-h-screen bg-[#FFF3E7] px-4 py-24 md:px-16 text-[#3B200F]">
@@ -165,12 +163,20 @@ function SingleProductPage() {
 
           {/* Add to Cart */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-6 max-w-[180px]"
+          
+            className="mt-6  flex gap-5"
           >
-            <Button className="w-full bg-[#3B200F] hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg">
+            <Button
+              onClick={handleAddToCart}
+              className="w-full bg-[#3B200F] hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
+            >
               Add to Cart
+            </Button>
+            <Button
+              onClick={() => navigate("/cart")}
+              className="w-full bg-[#D8A460]  hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
+            >
+               Show Cart
             </Button>
           </motion.div>
         </motion.div>
