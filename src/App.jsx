@@ -4,7 +4,7 @@ import LoadingScreen from "./pages/LoadingScreen ";
 import Navbar from "./components/Navbar";
 import MainRouter from "./components/MainRouter";
 import Lenis from "@studio-freight/lenis";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import { Toaster } from "sonner";
 import ScrollToTop from "./components/ScrollToTop";
 
