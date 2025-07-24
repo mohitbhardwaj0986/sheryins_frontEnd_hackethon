@@ -3,7 +3,6 @@ import HomeHeroSection from "../components/HomeHeroSection";
 import HoverImageBurst from "../components/HoverImageBurst ";
 import OurRecipes from "../components/OurRecipes";
 import CreatedBY from "../components/CreatedBY";
-
 function Home() {
    useEffect(() => {
    document.title = "Brew Better Days | Chamberlain Coffee";
@@ -14,7 +13,6 @@ function Home() {
       <HoverImageBurst />
       <OurRecipes />
       <CreatedBY />
-      {/* <CustomCursor /> */}
     </div>
   );
 }

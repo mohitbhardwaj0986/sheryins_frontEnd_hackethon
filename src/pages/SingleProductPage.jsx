@@ -7,8 +7,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 import fallbackimg from "../assets/sliderassets/978440fe09d65d3d1c461e614bd150d5.jpg";
 import { loadProducts, setActiveProduct } from "../store/reducers/dataReducer";
-import { addToCart } from "../store/reducers/cartReducer"; // 🛒 Import this
-
+import { addToCart } from "../store/reducers/cartReducer";
 import { FiArrowLeft, FiTag, FiStar, FiCoffee } from "react-icons/fi";
 import Button from "../components/Button";
 import { toast } from "sonner";
@@ -20,23 +19,21 @@ function SingleProductPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const imageRef = useRef(null);
+  const detailsRef = useRef(null);
 
   const activeProduct = useSelector(
     (state) => state.products.activeProduct,
     shallowEqual
   );
 
-  // Load all products once
   useEffect(() => {
     dispatch(loadProducts());
   }, [dispatch]);
 
-  // Set the active product when the id changes
   useEffect(() => {
     if (id) dispatch(setActiveProduct(id));
   }, [id, dispatch]);
 
-  // Animate image when activeProduct loads
   useEffect(() => {
     if (imageRef.current && activeProduct?.image) {
       gsap.fromTo(
@@ -53,18 +50,30 @@ function SingleProductPage() {
 
       ScrollTrigger.create({
         trigger: imageRef.current,
-        start: "top 85%",
+        start: "top 80%",
         onEnter: () =>
           gsap.fromTo(
             imageRef.current,
-            { opacity: 0 },
-            { opacity: 1, duration: 1 }
+            { opacity: 0, scale: 0.95 },
+            { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out" }
+          ),
+      });
+    }
+
+    if (detailsRef.current) {
+      ScrollTrigger.create({
+        trigger: detailsRef.current,
+        start: "top 90%",
+        onEnter: () =>
+          gsap.fromTo(
+            detailsRef.current,
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }
           ),
       });
     }
   }, [activeProduct]);
 
-  // Fallback loader
   if (!activeProduct) {
     return (
       <div className="min-h-screen flex justify-center items-center text-lg text-[#3B200F]">
@@ -78,32 +87,35 @@ function SingleProductPage() {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...activeProduct, quantity: 1 }));
-       toast.success("Add to Cart", {
-      style:{
-        background:"#61402E",
-        color:"#FFF3E7",
-        border:"1px solid #FFF3E7"
-      }
-    })
+    toast.success("Added to Cart", {
+      style: {
+        background: "#61402E",
+        color: "#FFF3E7",
+        border: "1px solid #FFF3E7",
+      },
+    });
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF3E7] px-4 py-24 md:px-16 text-[#3B200F]">
+    <div className="relative overflow-hidden bg-[#FFF3E7] text-[#3B200F] px-4 py-24 md:px-16">
+      {/* Gradient / steam background effect */}
+      <div className="absolute top-0 left-0 w-full h-full z-0 bg-gradient-to-br from-[#FFF3E7] via-[#FFF0DC] to-[#FFE7C8] animate-pulse opacity-10"></div>
+
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-sm text-[#3B200F] hover:underline mb-6"
+        className="flex items-center gap-2 text-sm hover:underline mb-6 z-10 relative"
       >
         <FiArrowLeft className="text-lg" />
         Go Back
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 z-10 relative">
         {/* Product Image */}
         <div className="flex justify-center items-center relative">
           <div
             ref={imageRef}
-            className="p-4 bg-white rounded-3xl shadow-xl transition-transform duration-500 hover:scale-105"
+            className="p-4 bg-white rounded-3xl shadow-xl hover:scale-105 transition-transform duration-500"
           >
             <img
               src={image || fallbackimg}
@@ -126,20 +138,19 @@ function SingleProductPage() {
 
         {/* Product Details */}
         <motion.div
+          ref={detailsRef}
           className="flex flex-col justify-center"
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{name}</h1>
 
-          {/* Price */}
           <div className="flex items-center text-xl font-semibold text-[#6E3A1C] mb-2 gap-2">
             <FiTag />
             <span>{price}</span>
           </div>
 
-          {/* Type */}
           {type && (
             <div className="flex items-center text-sm text-[#9A6A46] mb-2 gap-2">
               <FiCoffee />
@@ -147,10 +158,8 @@ function SingleProductPage() {
             </div>
           )}
 
-          {/* Description */}
           <p className="text-base mb-4 leading-relaxed">{description}</p>
 
-          {/* Offer */}
           {offer && (
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -162,7 +171,6 @@ function SingleProductPage() {
             </motion.div>
           )}
 
-          {/* Rating */}
           {rating && (
             <div className="flex items-center text-sm text-gray-700 gap-2">
               <FiStar className="text-yellow-500" />
@@ -170,8 +178,7 @@ function SingleProductPage() {
             </div>
           )}
 
-          {/* Add to Cart */}
-          <motion.div className="mt-6  flex gap-5">
+          <motion.div className="mt-6 flex gap-5">
             <Button
               onClick={handleAddToCart}
               className="w-full bg-[#3B200F] hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
@@ -180,7 +187,7 @@ function SingleProductPage() {
             </Button>
             <Button
               onClick={() => navigate("/cart")}
-              className="w-full bg-[#D8A460]  hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
+              className="w-full bg-[#D8A460] hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
             >
               Show Cart
             </Button>

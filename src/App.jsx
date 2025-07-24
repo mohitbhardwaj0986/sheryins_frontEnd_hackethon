@@ -7,6 +7,7 @@ import Lenis from "@studio-freight/lenis";
 import Footer from "./components/Footer";
 import { Toaster } from "sonner";
 import ScrollToTop from "./components/ScrollToTop";
+import CustomCursor from "./components/CustomCursor";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,7 @@ function App() {
           <Navbar />
           <MainRouter />
           <Footer />
+          <CustomCursor/>
           <Toaster richColors position="bottom-left" />
         </>
       )}

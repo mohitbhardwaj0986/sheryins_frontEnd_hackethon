@@ -4,18 +4,34 @@ import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
 import Button from "./Button";
-import HamburgerToggle from "./HamburgerToggle"; // ✅ custom hamburger
-
+import HamburgerToggle from "./HamburgerToggle";
 import { logoutUser } from "../store/reducers/userReducer";
 
-// Icons (lazy loaded)
-const FiHome = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiHome })));
-const FiCoffee = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiCoffee })));
-const FiInfo = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiInfo })));
-const FiShoppingCart = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiShoppingCart })));
-const FiLogIn = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiLogIn })));
-const FiUserPlus = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiUserPlus })));
-const FiLogOut = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiLogOut })));
+// Lazy load icons
+const FiHome = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiHome }))
+);
+const FiCoffee = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiCoffee }))
+);
+const FiInfo = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiInfo }))
+);
+const FiShoppingCart = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiShoppingCart }))
+);
+const FiLogIn = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiLogIn }))
+);
+const FiUserPlus = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiUserPlus }))
+);
+const FiLogOut = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiLogOut }))
+);
+const FiUser = lazy(() =>
+  import("react-icons/fi").then((m) => ({ default: m.FiUser }))
+);
 
 const headerVariants = {
   visible: {
@@ -74,10 +90,9 @@ function Navbar() {
       initial="hidden"
       animate={controls}
       variants={headerVariants}
-      className="fixed top-0 left-0 w-full z-30  backdrop-blur-md "
+      className="fixed top-0 left-0 w-full z-30 backdrop-blur-md"
     >
       <div className="flex items-center justify-between px-6 py-4">
-        {/* Logo */}
         <img src={logo} alt="logo" className="h-14" />
 
         {/* Desktop Nav */}
@@ -96,7 +111,7 @@ function Navbar() {
                 {link.icon}
                 {link.label}
                 {link.topIcon && (
-                  <span className="ml-1 bg-[#D8A460] text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow">
+                  <span className="mb-3 bg-[#D8A460] text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow">
                     {productCount}
                   </span>
                 )}
@@ -106,8 +121,18 @@ function Navbar() {
         </nav>
 
         {/* Desktop Buttons */}
-        <div className="hidden md:flex gap-2 items-center">
-          {!userInfo ? (
+        <div className="hidden md:flex gap-3 items-center">
+          {userInfo ? (
+            <>
+              <div className="flex items-center gap-2 bg-[#FFF3E7] border border-[#D8A460]/50 px-3 py-1 rounded-full shadow text-[#3B2C27] font-semibold text-sm">
+                <FiUser />
+                <span>{userInfo.name}</span>
+              </div>
+              <Button onClick={handleLogout}>
+                <FiLogOut className="inline mr-1" /> Logout
+              </Button>
+            </>
+          ) : (
             <>
               <Button onClick={() => navigate("/login")}>
                 <FiLogIn className="inline mr-1" /> Login
@@ -116,14 +141,9 @@ function Navbar() {
                 <FiUserPlus className="inline mr-1" /> Sign Up
               </Button>
             </>
-          ) : (
-            <Button onClick={handleLogout}>
-              <FiLogOut className="inline mr-1" /> Logout
-            </Button>
           )}
         </div>
 
-        {/* Custom Hamburger Button */}
         <HamburgerToggle isOpen={isOpen} toggle={() => setIsOpen(!isOpen)} />
       </div>
 
@@ -147,8 +167,6 @@ function Navbar() {
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
               className=" top-0 left-0 bg-[#FFF3E7]/60 w-full h-full z-40 px-6 py-8 flex flex-col"
             >
-             
-
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link) => (
                   <NavLink
@@ -166,19 +184,37 @@ function Navbar() {
                     )}
                   </NavLink>
                 ))}
-
+                <div className="flex items-center justify-center inline- gap-2 bg-[#FFF3E7] border border-[#D8A460]/50 px-3 py-1 rounded-full shadow text-[#3B2C27] font-semibold text-sm">
+                  <FiUser />
+                  <span>{userInfo.name}</span>
+                </div>
                 <div className="mt-10 flex flex-col gap-4">
                   {!userInfo ? (
                     <>
-                      <Button onClick={() => { navigate("/login"); setIsOpen(false); }}>
+                      <Button
+                        onClick={() => {
+                          navigate("/login");
+                          setIsOpen(false);
+                        }}
+                      >
                         <FiLogIn className="inline mr-1" /> Login
                       </Button>
-                      <Button onClick={() => { navigate("/signup"); setIsOpen(false); }}>
+                      <Button
+                        onClick={() => {
+                          navigate("/signup");
+                          setIsOpen(false);
+                        }}
+                      >
                         <FiUserPlus className="inline mr-1" /> Sign Up
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={() => { handleLogout(); setIsOpen(false); }}>
+                    <Button
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false);
+                      }}
+                    >
                       <FiLogOut className="inline mr-1" /> Logout
                     </Button>
                   )}

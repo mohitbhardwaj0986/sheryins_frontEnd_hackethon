@@ -49,8 +49,8 @@ export default function AboutSectionTwo() {
         "As I got older, coffee became a crucial part of my daily routine...",
         "Fast forward through hundreds of taste tests—and Chamberlain Coffee’s first product was born.",
       ],
-      bg: "#FFF3E7",
-      text: "#3B2C27",
+      bg: "#3B2C27",
+      text: "white",
       glassBg: "bg-white/30",
     },
     {
@@ -62,8 +62,9 @@ export default function AboutSectionTwo() {
         "Our organic matcha is sourced from Shizuoka, Japan...",
         "Our matcha is Ceremonial Grade A...",
       ],
-      bg: "#3B2C27",
-      text: "white",
+     
+       bg: "#FFF3E7",
+      text: "#3B2C27",
       glassBg: "bg-white/30",
     },
     {
@@ -73,9 +74,9 @@ export default function AboutSectionTwo() {
       content: [
         "Our suppliers use traditional methods to craft matcha that’s nutrient-packed...",
       ],
-      bg: "#FFF3E7",
-      text: "#3B2C27",
-      glassBg: "bg-white/30",
+     bg: "#3B2C27",
+      text: "white",
+      glassBg: "bg-white/10",
     },
     {
       image: aboutImage2,
@@ -86,9 +87,10 @@ export default function AboutSectionTwo() {
         "I can’t wait to show you what’s next.",
         "— Emma Chamberlain",
       ],
-      bg: "#3B2C27",
-      text: "white",
-      glassBg: "bg-white/10",
+    
+         bg: "#FFF3E7",
+      text: "#3B2C27",
+      glassBg: "bg-white/30",
     },
   ];
 
@@ -105,7 +107,7 @@ export default function AboutSectionTwo() {
             <img
               src={section.image}
               alt={section.alt}
-              className="w-full max-h-[80vh] rounded-3xl shadow-xl object-cover object-center"
+              className="w-full max-h-[80vh] rounded-3xl shadow-xl object-cover object-top"
             />
           </div>
           <div
