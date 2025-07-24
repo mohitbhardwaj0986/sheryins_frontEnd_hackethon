@@ -11,6 +11,7 @@ const SingleProductPage = lazy(() => import("../pages/SingleProductPage"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Signup = lazy(() => import("../pages/auth/Signup"));
+const NotFound = lazy(() => import("../pages/NotFound"))
 
 // Loading spinner
 const Loading = () => (
@@ -73,6 +74,7 @@ function MainRouter() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

@@ -9,6 +9,7 @@ function Signup() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -21,6 +22,7 @@ function Signup() {
         border: "1px solid #FFF3E7",
       },
     });
+    reset()
   };
 
   return (

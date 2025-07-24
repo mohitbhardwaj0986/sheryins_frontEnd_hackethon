@@ -18,6 +18,7 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm();
 
   const onSubmit = (data) => {
@@ -39,6 +40,7 @@ function Login() {
               border:"1px solid #FFF3E7"
             }
           })
+          reset()
     } else {
       dispatch(userFail("Invalid email or password"));
       toast.error("Invalid email or password");

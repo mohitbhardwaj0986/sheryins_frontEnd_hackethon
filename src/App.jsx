@@ -24,7 +24,6 @@ function App() {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
-
     requestAnimationFrame(raf);
     return () => clearTimeout(timer);
   }, []);
@@ -32,20 +31,16 @@ function App() {
   return (
     <>
       <AnimatePresence>{isLoading && <LoadingScreen />}</AnimatePresence>
-
       {!isLoading && (
         <>
-          
           <ScrollToTop />
           <Navbar />
           <MainRouter />
           <Footer />
-          <Toaster richColors position="top-center" />
+          <Toaster richColors position="bottom-left" />
         </>
       )}
     </>
   );
 }
-
-
 export default App;

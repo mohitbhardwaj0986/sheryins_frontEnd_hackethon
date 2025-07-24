@@ -15,7 +15,7 @@ import {
   FiShoppingCart,
 } from "react-icons/fi";
 import { FaCoffee } from "react-icons/fa";
-import Button from "../components/Button"
+import Button from "../components/Button";
 function Cart() {
   const dispatch = useDispatch();
   const { cartItems, cartTotal } = useSelector((state) => state.cart);
@@ -29,9 +29,9 @@ function Cart() {
       },
     },
   };
-useEffect(() => {
-  document.title = "Your Coffee Cart | Chamberlain Coffee";
-})
+  useEffect(() => {
+    document.title = "Your Coffee Cart | Chamberlain Coffee";
+  });
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
@@ -40,20 +40,22 @@ useEffect(() => {
   if (cartItems.length === 0) {
     return (
       <motion.div
-        className="min-h-screen flex flex-col justify-center items-center bg-[#FFF3E7] text-[#3B200F] px-4"
+        className="min-h-screen  flex flex-col justify-center items-center bg-[#FFF3E7] text-[#3B200F] px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
         <FaCoffee size={48} className="mb-4 text-[#B7794E]" />
         <h2 className="text-3xl font-semibold mb-2">Your cart is empty</h2>
-        <p className="text-center text-md">Start adding your favorite coffee goodies!</p>
+        <p className="text-center text-md">
+          Start adding your favorite coffee goodies!
+        </p>
       </motion.div>
     );
   }
 
   return (
     <motion.div
-      className="min-h-screen py-20 px-4 sm:px-6 md:px-16 bg-[#FFF3E7] text-[#3B200F]"
+      className="min-h-screen py-30 px-4 sm:px-6 md:px-16 bg-[#FFF3E7] text-[#3B200F]"
       initial="hidden"
       animate="show"
       variants={container}
@@ -106,9 +108,7 @@ useEffect(() => {
                 >
                   <FiMinus />
                 </motion.button>
-                <span className="font-medium text-lg">
-                  {itemData.quantity}
-                </span>
+                <span className="font-medium text-lg">{itemData.quantity}</span>
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ rotate: 10, scale: 1.1 }}
@@ -132,7 +132,8 @@ useEffect(() => {
                 <FiXCircle size={20} />
               </motion.button>
               <p className="text-sm text-[#3B200F] font-semibold">
-                ${(
+                $
+                {(
                   parseFloat(itemData.price.replace("$", "")) *
                   itemData.quantity
                 ).toFixed(2)}
@@ -144,28 +145,19 @@ useEffect(() => {
 
       {/* Total & Checkout */}
       <motion.div
-        className="mt-12 text-center sm:text-right"
+        className="mt-12 text-center gap-5 flex flex-col justify-center items-center sm:text-right"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
         <h2 className="text-lg sm:text-xl font-bold">
-          Total:{" "}
-          <span className="text-[#6E3A1C]">${cartTotal.toFixed(2)}</span>
+          Total: <span className="text-[#6E3A1C]">${cartTotal.toFixed(2)}</span>
         </h2>
-        <motion.button
-          whileHover={{
-            scale: 1.05,
-            boxShadow: "0px 4px 14px rgba(107, 53, 27, 0.3)",
-          }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-4 px-6 py-3 bg-[#3B200F] text-white rounded-full shadow hover:bg-[#512B13] transition-all"
-        >
+        <Button className=" bg-[#3B200F] hover:text-[#FFF3E7] shadow hover:bg-[#512B13] ">
           Proceed to Checkout
-        </motion.button>
+        </Button>
       </motion.div>
     </motion.div>
-
   );
 }
 

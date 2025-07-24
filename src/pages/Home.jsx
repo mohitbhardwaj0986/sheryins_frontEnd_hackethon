@@ -9,7 +9,7 @@ function Home() {
    document.title = "Brew Better Days | Chamberlain Coffee";
     }, []);
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden scrollbar-hide">
       <HomeHeroSection />
       <HoverImageBurst />
       <OurRecipes />
