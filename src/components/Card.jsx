@@ -3,12 +3,15 @@ import { FiArrowUpRight } from "react-icons/fi";
 import { motion } from "framer-motion";
 import icon from "../assets/about/icon.png";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 function Card({ product }) {
+  const navigate = useNavigate()
   if (!product) return null;
 
   return (
     <motion.div
+    onClick={()=>navigate(`/single-product/${product?.id}`)}
       className="w-[100%] rounded-3xl  shadow-xl bg-[#D8A460] overflow-hidden font-sans border border-[#A1795A]"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}

@@ -54,7 +54,7 @@ const productSlice = createSlice({
 
     setActiveProduct: (state, action) => {
       const id = action.payload;
-      state.activeProduct = state.products.find((item) => item.id === id);
+      state.activeProduct = state.products.find((item) => item.id == id);
     },
 
     clearActiveProduct: (state) => {
