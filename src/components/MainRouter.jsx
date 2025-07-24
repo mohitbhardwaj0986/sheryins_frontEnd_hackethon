@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import PrivateRoute from "./PrivateRoute";
 
 // Lazy-loaded pages
 const Home = lazy(() => import("../pages/Home"));
@@ -8,6 +9,8 @@ const About = lazy(() => import("../pages/About"));
 const Products = lazy(() => import("../pages/Products"));
 const SingleProductPage = lazy(() => import("../pages/SingleProductPage"));
 const Cart = lazy(() => import("../pages/Cart"));
+const Login = lazy(() => import("../pages/auth/Login"));
+const Signup = lazy(() => import("../pages/auth/Signup"));
 
 // Loading spinner
 const Loading = () => (
@@ -31,33 +34,47 @@ const pageVariants = {
   },
 };
 
-// Page wrapper with animation
-const Page = ({ children }) => (
-  <motion.div
-    key={Math.random()} // helps reset motion for dynamic routes
-    initial="initial"
-    animate="animate"
-    exit="exit"
-    variants={pageVariants}
-    className="min-h-screen"
-  >
-    {children}
-  </motion.div>
-);
-
 function MainRouter() {
   const location = useLocation();
 
   return (
     <Suspense fallback={<Loading />}>
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Page><Home /></Page>} />
-          <Route path="/about" element={<Page><About /></Page>} />
-          <Route path="/products" element={<Page><Products /></Page>} />
-          <Route path="/single-product/:id" element={<Page><SingleProductPage /></Page>} />
-          <Route path="/cart" element={<Page><Cart /></Page>} />
-        </Routes>
+        <motion.div
+          key={location.pathname}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={pageVariants}
+          className="min-h-screen"
+        >
+          <Routes location={location} key={location.pathname}>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/single-product/:id" element={<SingleProductPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/products"
+              element={
+                <PrivateRoute>
+                  <Products />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </motion.div>
       </AnimatePresence>
     </Suspense>
   );

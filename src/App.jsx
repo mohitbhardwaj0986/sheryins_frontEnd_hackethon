@@ -5,13 +5,14 @@ import Navbar from "./components/Navbar";
 import MainRouter from "./components/MainRouter";
 import Lenis from "@studio-freight/lenis";
 import Footer from "./components/footer";
-
+import { Toaster } from "sonner";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2500);
+    const timer = setTimeout(() => setIsLoading(false), 3000);
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -30,18 +31,21 @@ function App() {
 
   return (
     <>
-      <AnimatePresence>
-        {isLoading && <LoadingScreen />}
-      </AnimatePresence>
+      <AnimatePresence>{isLoading && <LoadingScreen />}</AnimatePresence>
+
       {!isLoading && (
         <>
+          
+          <ScrollToTop />
           <Navbar />
-          <MainRouter  />
-          <Footer/>
+          <MainRouter />
+          <Footer />
+          <Toaster richColors position="top-center" />
         </>
       )}
     </>
   );
 }
+
 
 export default App;

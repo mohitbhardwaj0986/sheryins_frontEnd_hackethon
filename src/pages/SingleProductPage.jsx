@@ -11,6 +11,7 @@ import { addToCart } from "../store/reducers/cartReducer"; // 🛒 Import this
 
 import { FiArrowLeft, FiTag, FiStar, FiCoffee } from "react-icons/fi";
 import Button from "../components/Button";
+import { toast } from "sonner";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,10 +73,18 @@ function SingleProductPage() {
     );
   }
 
-  const { name, price, image, description, rating, type, offer } = activeProduct;
+  const { name, price, image, description, rating, type, offer } =
+    activeProduct;
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...activeProduct, quantity: 1 }));
+       toast.success("Add to Cart", {
+      style:{
+        background:"#61402E",
+        color:"#FFF3E7",
+        border:"1px solid #FFF3E7"
+      }
+    })
   };
 
   return (
@@ -162,10 +171,7 @@ function SingleProductPage() {
           )}
 
           {/* Add to Cart */}
-          <motion.div
-          
-            className="mt-6  flex gap-5"
-          >
+          <motion.div className="mt-6  flex gap-5">
             <Button
               onClick={handleAddToCart}
               className="w-full bg-[#3B200F] hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
@@ -176,7 +182,7 @@ function SingleProductPage() {
               onClick={() => navigate("/cart")}
               className="w-full bg-[#D8A460]  hover:text-[#FFF3E7] hover:bg-[#512B13] rounded-full shadow-lg"
             >
-               Show Cart
+              Show Cart
             </Button>
           </motion.div>
         </motion.div>

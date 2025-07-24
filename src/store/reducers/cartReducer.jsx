@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 // Load cart state from localStorage if available
 const loadCartFromLocalStorage = () => {
@@ -44,6 +45,13 @@ const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter((item) => item.id !== productId);
       cartSlice.caseReducers.calculateTotal(state);
       saveCartToLocalStorage(state);
+         toast.success("Item removed", {
+      style:{
+        background:"#61402E",
+        color:"#FFF3E7",
+        border:"1px solid #FFF3E7"
+      }
+    })
     },
 
     increaseQty: (state, action) => {
@@ -71,6 +79,13 @@ const cartSlice = createSlice({
       state.cartTotal = 0;
       state.productCount = 0;
       saveCartToLocalStorage(state);
+         toast.success("All removed", {
+            style:{
+              background:"#61402E",
+              color:"#FFF3E7",
+              border:"1px solid #FFF3E7"
+            }
+          })
     },
 
     calculateTotal: (state) => {

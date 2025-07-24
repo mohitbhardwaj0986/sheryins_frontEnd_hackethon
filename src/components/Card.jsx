@@ -9,6 +9,7 @@ import gsap from "gsap";
 import icon from "../assets/about/icon.png";
 import Button from "../components/Button";
 import { addToCart } from "../store/reducers/cartReducer";
+import { toast } from "sonner";
 
 function Card({ product }) {
   const dispatch = useDispatch();
@@ -37,6 +38,13 @@ function Card({ product }) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     dispatch(addToCart(product));
+    toast.success("Add to Cart", {
+      style:{
+        background:"#61402E",
+        color:"#FFF3E7",
+        border:"1px solid #FFF3E7"
+      }
+    })
   };
 
   return (

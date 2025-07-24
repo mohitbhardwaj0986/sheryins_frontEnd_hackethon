@@ -109,7 +109,7 @@ const RecipeCard = ({ title, imgSrc, videoSrc, li = [], instrucitons }) => {
           ref={imgRef}
           src={imgSrc}
           alt={title}
-          className="absolute h-full w-full object-cover z-20"
+          className="absolute h-full w-full object-top object-cover z-20"
         />
         <video
           ref={videoRef}

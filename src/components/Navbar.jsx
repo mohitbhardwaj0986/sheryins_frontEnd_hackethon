@@ -1,29 +1,21 @@
 import React, { useEffect, useState, Suspense, lazy } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
-import { useSelector } from "react-redux";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../assets/logo.png";
 import Button from "./Button";
+import HamburgerToggle from "./HamburgerToggle"; // ✅ custom hamburger
 
-// Lazy-load icons
-const FiHome = lazy(() =>
-  import("react-icons/fi").then((m) => ({ default: m.FiHome }))
-);
-const FiCoffee = lazy(() =>
-  import("react-icons/fi").then((m) => ({ default: m.FiCoffee }))
-);
-const FiInfo = lazy(() =>
-  import("react-icons/fi").then((m) => ({ default: m.FiInfo }))
-);
-const FiShoppingCart = lazy(() =>
-  import("react-icons/fi").then((m) => ({ default: m.FiShoppingCart }))
-);
-const FiLogIn = lazy(() =>
-  import("react-icons/fi").then((m) => ({ default: m.FiLogIn }))
-);
-const FiUserPlus = lazy(() =>
-  import("react-icons/fi").then((m) => ({ default: m.FiUserPlus }))
-);
+import { logoutUser } from "../store/reducers/userReducer";
+
+// Icons (lazy loaded)
+const FiHome = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiHome })));
+const FiCoffee = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiCoffee })));
+const FiInfo = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiInfo })));
+const FiShoppingCart = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiShoppingCart })));
+const FiLogIn = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiLogIn })));
+const FiUserPlus = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiUserPlus })));
+const FiLogOut = lazy(() => import("react-icons/fi").then(m => ({ default: m.FiLogOut })));
 
 const headerVariants = {
   visible: {
@@ -36,39 +28,39 @@ const headerVariants = {
   },
 };
 
-const linkVariants = {
-  hidden: { opacity: 0, y: -10 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.5, type: "spring", stiffness: 120, damping: 40 },
-  }),
-};
-
 function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const controls = useAnimation();
   const [lastScrollY, setLastScrollY] = useState(0);
-  const navigate = useNavigate();
-  const { productCount } = useSelector((state) => state.cart);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const controlNavbar = () => {
-    const currentY = window.scrollY;
-    if (currentY > lastScrollY && currentY > 80) {
-      controls.start("hidden");
-    } else {
-      controls.start("visible");
-    }
-    setLastScrollY(currentY);
-  };
+  const { productCount } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
+    const controlNavbar = () => {
+      const currentY = window.scrollY;
+      if (currentY > lastScrollY && currentY > 80) {
+        controls.start("hidden");
+      } else {
+        controls.start("visible");
+      }
+      setLastScrollY(currentY);
+    };
+
     window.addEventListener("scroll", controlNavbar);
     return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY, controls]);
 
   useEffect(() => {
     controls.start("visible");
-  }, [controls]);
+  }, []);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/");
+  };
 
   const navLinks = [
     { to: "/", label: "Home", icon: <FiHome /> },
@@ -82,59 +74,120 @@ function Navbar() {
       initial="hidden"
       animate={controls}
       variants={headerVariants}
-      className="fixed backdrop-blur-md top-0 left-0 w-full z-20 px-6 py-4"
+      className="fixed top-0 left-0 w-full z-30  backdrop-blur-md "
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <img src={logo} alt="logo" className="h-17 object-contain" />
+        <img src={logo} alt="logo" className="h-14" />
 
-        {/* Navigation Links */}
-        <nav className="flex gap-6 font-medium backdrop-blur-md bg-[#FFF3E7]/70 px-6 py-2 rounded-xl border border-[#D8A460]/30 shadow-md">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex gap-6 font-medium bg-[#FFF3E7]/80 px-6 py-2 rounded-xl shadow border border-[#D8A460]/30">
           <Suspense fallback={<span className="text-sm">...</span>}>
-            {navLinks.map((link, i) => (
-              <motion.div
+            {navLinks.map((link) => (
+              <NavLink
                 key={link.to}
-                custom={i}
-                initial="hidden"
-                animate="visible"
-                variants={linkVariants}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.96 }}
-                className="flex items-center gap-1 relative"
+                to={link.to}
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-[#61402E] bg-[#FFDAB9] font-semibold rounded-full py-1 px-3 flex items-center gap-1 shadow"
+                    : "text-[#3B2C27] font-semibold hover:text-[#A1795A] transition-colors flex items-center gap-1"
+                }
               >
-                <NavLink
-                  to={link.to}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-[#61402E] bg-[#FFDAB9] font-semibold rounded-full shadow-md py-1 px-2 flex items-center gap-1"
-                      : "text-[#3B2C27] font-semibold hover:text-[#A1795A] transition-colors flex items-center gap-1"
-                  }
-                >
-                  {link.icon}
-                  {link.label}
-                </NavLink>
+                {link.icon}
+                {link.label}
                 {link.topIcon && (
-                  <span className="absolute -right-4 top-0 w-5 h-5 bg-[#D8A460] text-white text-xs font-bold flex items-center justify-center rounded-full shadow-md">
+                  <span className="ml-1 bg-[#D8A460] text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow">
                     {productCount}
                   </span>
                 )}
-              </motion.div>
+              </NavLink>
             ))}
           </Suspense>
         </nav>
 
-        {/* Action Buttons */}
-        <Suspense fallback={<></>}>
-          <div className="flex gap-2">
-            <Button onClick={() => navigate("/login")}>
-              <FiLogIn className="inline mr-1" /> Login
+        {/* Desktop Buttons */}
+        <div className="hidden md:flex gap-2 items-center">
+          {!userInfo ? (
+            <>
+              <Button onClick={() => navigate("/login")}>
+                <FiLogIn className="inline mr-1" /> Login
+              </Button>
+              <Button onClick={() => navigate("/signup")}>
+                <FiUserPlus className="inline mr-1" /> Sign Up
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleLogout}>
+              <FiLogOut className="inline mr-1" /> Logout
             </Button>
-            <Button onClick={() => navigate("/signup")}>
-              <FiUserPlus className="inline mr-1" /> Sign Up
-            </Button>
-          </div>
-        </Suspense>
+          )}
+        </div>
+
+        {/* Custom Hamburger Button */}
+        <HamburgerToggle isOpen={isOpen} toggle={() => setIsOpen(!isOpen)} />
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              className=" bg-[#FFF3E7]/40 backdrop-blur-xl z-30"
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div
+              key="menu"
+              initial={{ y: "-100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "-100%", opacity: 0 }}
+              transition={{ type: "spring", stiffness: 120, damping: 20 }}
+              className=" top-0 left-0 bg-[#FFF3E7]/60 w-full h-full z-40 px-6 py-8 flex flex-col"
+            >
+             
+
+              <nav className="flex flex-col gap-6">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    className="text-[#3B2C27]  rounded-full text-xl font-semibold flex items-center gap-3 px-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.icon}
+                    {link.label}
+                    {link.topIcon && (
+                      <span className="ml-auto bg-[#D8A460] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full shadow">
+                        {productCount}
+                      </span>
+                    )}
+                  </NavLink>
+                ))}
+
+                <div className="mt-10 flex flex-col gap-4">
+                  {!userInfo ? (
+                    <>
+                      <Button onClick={() => { navigate("/login"); setIsOpen(false); }}>
+                        <FiLogIn className="inline mr-1" /> Login
+                      </Button>
+                      <Button onClick={() => { navigate("/signup"); setIsOpen(false); }}>
+                        <FiUserPlus className="inline mr-1" /> Sign Up
+                      </Button>
+                    </>
+                  ) : (
+                    <Button onClick={() => { handleLogout(); setIsOpen(false); }}>
+                      <FiLogOut className="inline mr-1" /> Logout
+                    </Button>
+                  )}
+                </div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }
