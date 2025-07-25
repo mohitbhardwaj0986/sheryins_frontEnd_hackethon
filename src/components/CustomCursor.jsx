@@ -32,7 +32,7 @@ const CustomCursor = () => {
       rippleControls.start({
         scale: [1, 3],
         opacity: [0.4, 0],
-        transition: { duration: 0.5, ease: "easeOut" },
+        transition: { duration: 0.5, ease: "linear" },
       });
       setTimeout(() => setIsClicked(false), 200);
     };
@@ -81,7 +81,7 @@ const CustomCursor = () => {
             : "bg-[#92A77D]/20 border-[#92A77D]"
         } 
         border backdrop-blur-md shadow-[0_0_25px_#92A77D40]
-        transition-all duration-300 ease-in-out`}
+        transition-all duration-300 linear`}
         style={{
           x,
           y,
@@ -96,7 +96,7 @@ const CustomCursor = () => {
           x: innerX,
           y: innerY,
           scale: isClicked ? 0.6 : 1,
-          transition: "all 0.2s ease-in-out",
+          transition: "all 0.2s linear",
         }}
       />
     </div>

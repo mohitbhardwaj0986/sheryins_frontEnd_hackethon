@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import aboutImage from "../assets/aboutsectiontwo.jpg";
-import aboutImage1 from "../assets/aboutsection2.jpg";
-import aboutImage2 from "../assets/aboutsection3.jpg";
-import aboutImage3 from "../assets/aboutsection4.jpg";
+import aboutImage from "../assets/aboutsectiontwo.png";
+import aboutImage1 from "../assets/aboutsection2.png";
+import aboutImage2 from "../assets/aboutsection3.png";
+import aboutImage3 from "../assets/aboutsection4.png";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,7 +31,7 @@ export default function AboutSectionTwo() {
             end: "+=100%",
             scrub: true,
             pin: true,
-            pinSpacing: false,
+          
           },
         }
       );
@@ -62,8 +63,8 @@ export default function AboutSectionTwo() {
         "Our organic matcha is sourced from Shizuoka, Japan...",
         "Our matcha is Ceremonial Grade A...",
       ],
-     
-       bg: "#FFF3E7",
+
+      bg: "#FFF3E7",
       text: "#3B2C27",
       glassBg: "bg-white/30",
     },
@@ -74,7 +75,7 @@ export default function AboutSectionTwo() {
       content: [
         "Our suppliers use traditional methods to craft matcha that’s nutrient-packed...",
       ],
-     bg: "#3B2C27",
+      bg: "#3B2C27",
       text: "white",
       glassBg: "bg-white/10",
     },
@@ -87,8 +88,8 @@ export default function AboutSectionTwo() {
         "I can’t wait to show you what’s next.",
         "— Emma Chamberlain",
       ],
-    
-         bg: "#FFF3E7",
+
+      bg: "#FFF3E7",
       text: "#3B2C27",
       glassBg: "bg-white/30",
     },
@@ -103,18 +104,39 @@ export default function AboutSectionTwo() {
           className={`h-screen flex flex-col lg:flex-row items-center justify-center px-6 gap-10 lg:px-20 py-10`}
           style={{ backgroundColor: section.bg, color: section.text }}
         >
-          <div className="w-full lg:w-1/2 flex justify-center">
-            <img
-              src={section.image}
-              alt={section.alt}
-              className="w-full max-h-[80vh] rounded-3xl shadow-xl object-cover object-top"
-            />
-          </div>
-          <div
-            className={`w-full lg:w-1/2 ${section.glassBg} backdrop-blur-md p-8 rounded-3xl shadow-lg max-h-[80vh] overflow-y-auto`}
+      <motion.div
+  className="w-full lg:w-1/2 flex justify-center"
+  whileHover={{ scale: 1.05, rotate: 1 }}
+  whileTap={{ scale: 0.98 }}
+  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+>
+  <motion.img
+    src={section.image}
+    alt={section.alt}
+    initial={{ opacity: 0, y: 30, scale: 0.95 }}
+    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+    viewport={{ once: true }}
+    className="w-[80%] max-h-[80vh] rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.3)] object-cover object-top hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] transition-shadow duration-500"
+    whileHover={{
+      scale: 1.08,
+      rotate: -2,
+      boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+    }}
+  />
+</motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0.2 }}
+            className={`w-full max-h-[80vh] overflow-y-auto px-4 py-6 md:px-6 lg:px-8 lg:py-8 rounded-3xl shadow-lg backdrop-blur-md ${section.glassBg}`}
           >
-            <h2 className="text-4xl font-bold mb-4">{section.heading}</h2>
-            <div className="space-y-4 text-lg">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 leading-tight">
+              {section.heading}
+            </h2>
+            <div className="space-y-4 text-base md:text-lg">
               {section.content.map((para, i) => (
                 <p
                   key={i}
@@ -126,24 +148,12 @@ export default function AboutSectionTwo() {
                 </p>
               ))}
             </div>
-          </div>
+          </motion.div>
         </section>
       ))}
 
       {/* Footer */}
-      <div className="h-[100vh] bg-[#FFF3E7] flex items-center justify-center px-6">
-        <footer className="text-center text-[#3B2C27] space-y-4">
-          <h2 className="text-3xl font-bold text-[#D8A460]">
-            Thanks for scrolling ☕
-          </h2>
-          <p className="text-md">
-            © 2025 Chamberlain Coffee. All rights reserved.
-          </p>
-          <button className="bg-[#FFDAB9] text-[#3B2C27] px-6 py-2 rounded-xl font-semibold hover:bg-[#fbcfae] transition duration-300">
-            Explore Products
-          </button>
-        </footer>
-      </div>
+  
     </div>
   );
 }

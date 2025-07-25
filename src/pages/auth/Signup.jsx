@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiUserPlus } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "../../components/Button";
 import { toast } from "sonner";
@@ -13,7 +13,7 @@ function Signup() {
     reset,
     formState: { errors },
   } = useForm();
-
+const navigate = useNavigate()
   const onSubmit = (data) => {
     localStorage.setItem("userInfo", JSON.stringify(data));
     toast.success("User Created Please Login", {
@@ -23,6 +23,7 @@ function Signup() {
         border: "1px solid #FFF3E7",
       },
     });
+    navigate("/login")
     reset()
   };
 
