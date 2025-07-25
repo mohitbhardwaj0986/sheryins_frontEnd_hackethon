@@ -161,11 +161,16 @@ function Navbar() {
             />
             <motion.div
               key="menu"
-              initial={{ y: "-100%", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: "-100%", opacity: 0 }}
-              transition={{ type: "spring", stiffness: 120, damping: 20 }}
-              className=" top-0 left-0 bg-[#FFF3E7]/60 w-full h-full z-40 px-6 py-8 flex flex-col"
+              initial={{ y: "-100%", opacity: 0, scale: 0.95, skewY: 3 }}
+              animate={{ y: 0, opacity: 1, scale: 1, skewY: 0 }}
+              exit={{ y: "-100%", opacity: 0, scale: 0.95, skewY: 3 }}
+              transition={{
+                type: "spring",
+                stiffness: 100,
+                damping: 18,
+                mass: 0.8,
+              }}
+              className="top-0 left-0 h-screen bg-[#FFF3E7]/60 w-full  z-40 px-6 py-8 flex flex-col"
             >
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link) => (

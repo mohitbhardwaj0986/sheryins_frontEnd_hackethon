@@ -19,15 +19,16 @@ function HomeHeroSection() {
       duration: 1,
       scrollTrigger: {
         trigger: videoWrapperRef.current,
-        start: "top 10%",
+        start: "top 30%",
         end: "bottom 20%",
         scrub: true,
+     
       },
     });
   }, []);
 
   return (
-   <div className="py-20 pb-70 bg-[#FFF3E7] text-[#3B2C27] 2xl:py-32 overflow-hidden">
+   <div className="pt-25 pb-65 bg-[#FFF3E7] text-[#3B2C27] 2xl:py-32 overflow-hidden">
   {/* Top Text */}
   <motion.div
     className="px-6 lg:px-24 2xl:px-44"

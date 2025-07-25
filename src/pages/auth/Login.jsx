@@ -69,7 +69,7 @@ function Login() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-[#FFF3E7] overflow-hidden">
+    <div className="relative pt-20 min-h-screen flex items-center justify-center bg-[#FFF3E7] overflow-hidden">
       {/* Animated Background Blobs */}
       <div className="absolute w-full h-full -z-10 overflow-hidden">
         <motion.div
@@ -85,13 +85,7 @@ function Login() {
       </div>
 
       {/* Floating Coffee Icon */}
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity }}
-        className="absolute top-10 text-[#6E3A1C]"
-      >
-        <FiCoffee size={40} />
-      </motion.div>
+    
 
       {/* Login Card */}
       <motion.div
@@ -100,6 +94,13 @@ function Login() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-md bg-white shadow-2xl rounded-3xl px-8 py-12 z-10"
       >
+          <motion.div
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity }}
+        className="   relative  text-[#6E3A1C]"
+      >
+        <FiCoffee className="-top-7 right-[50%] absolute" size={40} />
+      </motion.div>
         <motion.div
           variants={containerVariants}
           initial="hidden"
