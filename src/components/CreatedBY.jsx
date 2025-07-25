@@ -4,7 +4,7 @@ import Button from "./Button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
-
+import {motion} from 'framer-motion'
 gsap.registerPlugin(ScrollTrigger);
 
 function CreatedBY() {
@@ -56,39 +56,65 @@ function CreatedBY() {
 
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-16">
         {/* Text Content */}
-        <div
-          ref={textRef}
-          className="flex-1 space-y-6 text-center lg:text-left backdrop-blur-xl bg-white/30 p-8 rounded-3xl shadow-2xl"
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#3B2C27] leading-snug">
-            Created by <span className="text-[#D8A460]">Emma Chamberlain</span>
-          </h2>
-          <p className="text-[#3B2C27] text-lg leading-relaxed tracking-wide font-medium">
-            At Chamberlain Coffee, we’re passionate about providing
-            high-quality, delicious beverages. So you can enjoy every sip, slurp
-            and spill (it happens) knowing it’s thoughtfully made.
-          </p>
-          <p className="text-[#3B2C27] text-base leading-relaxed tracking-wide">
-            Drinks can be more than just drinks — they’re sources of joy,
-            creativity, and comfort. We’re grateful to be part of your daily
-            routine.
-          </p>
-          <Button
-            onClick={() => navigate("/about")}
-            aria-label="Learn more about Emma Chamberlain"
-          >
-            Learn more
-          </Button>
-        </div>
+       <motion.div
+  ref={textRef}
+  whileHover={{
+    scale: 1.03,
+    rotate: 0.5,
+    transition: { type: "spring", stiffness: 200, damping: 12 },
+  }}
+  className="relative flex-1 space-y-6 text-center lg:text-left backdrop-blur-xl bg-white/30 p-8 rounded-3xl shadow-2xl transition-all duration-300 group"
+>
+  {/* Glowing border on hover */}
+  <div className="absolute inset-0 rounded-3xl z-[-1] bg-gradient-to-r from-[#D8A460]/30 via-[#f8d9b0]/20 to-[#92A77D]/30 blur-md opacity-0 group-hover:opacity-100 transition-all duration-500" />
+
+  <h2 className="text-4xl md:text-5xl font-extrabold text-[#3B2C27] leading-snug">
+    Created by{" "}
+    <span className="text-[#D8A460] hover:underline underline-offset-4 transition-all duration-300">
+      Emma Chamberlain
+    </span>
+  </h2>
+  <p className="text-[#3B2C27] text-lg leading-relaxed tracking-wide font-medium">
+    At Chamberlain Coffee, we’re passionate about providing high-quality,
+    delicious beverages. So you can enjoy every sip, slurp and spill (it
+    happens) knowing it’s thoughtfully made.
+  </p>
+  <p className="text-[#3B2C27] text-base leading-relaxed tracking-wide">
+    Drinks can be more than just drinks — they’re sources of joy, creativity,
+    and comfort. We’re grateful to be part of your daily routine.
+  </p>
+
+  {/* Fancy Button with Shine Effect */}
+  <div className="relative inline-block group">
+    <Button
+      onClick={() => navigate("/about")}
+      aria-label="Learn more about Emma Chamberlain"
+      className="overflow-hidden relative z-10"
+    >
+      <span className="relative z-20">Learn more</span>
+      {/* Shine effect */}
+      <span className="absolute top-0 left-[-100%] w-full h-full bg-white/30 rotate-6 group-hover:left-full transition-all duration-700 ease-in-out" />
+    </Button>
+  </div>
+</motion.div>
 
         {/* Image Block */}
-        <div ref={imageRef} className="flex-1 w-full max-w-md">
-          <img
-            src={emma}
-            alt="Portrait of Emma Chamberlain"
-            className="w-full rounded-3xl object-cover shadow-[0_20px_40px_rgba(59,44,39,0.25)] transition-transform duration-500 hover:scale-105"
-          />
-        </div>
+        <div
+  ref={imageRef}
+  className="group relative flex-1 w-full max-w-md perspective-1000"
+>
+  <div className="transform-style-preserve-3d transition-all duration-700 group-hover:rotate-[1.5deg] group-hover:scale-[1.05] group-hover:-translate-y-2 relative rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_30px_60px_rgba(59,44,39,0.35)]">
+    <img
+      src={emma}
+      alt="Portrait of Emma Chamberlain"
+      className="w-full h-full object-cover rounded-3xl"
+    />
+
+    {/* Shine/Glare effect */}
+    <div className="absolute inset-0 pointer-events-none before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:via-white/40 before:to-white/10 before:rotate-[-45deg] before:translate-x-[-100%] group-hover:before:animate-shine" />
+  </div>
+</div>
+
       </div>
     </section>
   );

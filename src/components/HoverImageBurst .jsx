@@ -33,51 +33,59 @@ const HoverImageBurst = () => {
     const img = document.createElement("img");
     img.src = image;
     img.className =
-      "w-[15%] h-[40%] object-cover pointer-events-none absolute z-10";
+      "w-[150px] h-[200px] object-cover pointer-events-none absolute z-50 rounded-xl drop-shadow-xl";
     img.style.position = "absolute";
     img.style.top = "0";
     img.style.left = "0";
     img.style.opacity = "0";
+    img.style.mixBlendMode = "multiply";
+
     container.appendChild(img);
 
-    gsap.fromTo(
-      img,
-      {
-        x: mouseX,
-        y: mouseY,
-        scale: 0.3,
-        opacity: 0,
-      },
-      {
-        x: mouseX + gsap.utils.random(-100, 100),
-        y: mouseY + gsap.utils.random(-100, 100),
-        scale: 1,
-        opacity: 1,
-        rotation: 0,
-        duration: 0.9,
-        ease: "back.out(1.7)",
-        onComplete: () => {
-          // After a delay, fade and remove
-          gsap.to(img, {
-            opacity: 0,
-            scale: 0.5,
-            duration: 0.3,
-            onComplete: () => {
-              img.remove();
-            },
-          });
+    const angle = gsap.utils.random(-180, 180);
+    const distance = gsap.utils.random(100, 250);
+    const scale = gsap.utils.random(0.8, 1.3);
+    const rotation = gsap.utils.random(-30, 30);
+
+    const timeline = gsap.timeline();
+
+    timeline
+      .fromTo(
+        img,
+        {
+          x: mouseX,
+          y: mouseY,
+          scale: 0.3,
+          opacity: 0,
+          rotationX: 0,
+          rotationY: 0,
         },
-      }
-    );
+        {
+          x: mouseX + distance * Math.cos(angle),
+          y: mouseY + distance * Math.sin(angle),
+          scale: scale,
+          opacity: 1,
+          rotationX: rotation,
+          rotationY: rotation,
+          duration: 0.9,
+          ease: "expo.out",
+        }
+      )
+      .to(img, {
+        opacity: 0,
+        scale: 0.5,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => img.remove(),
+      });
   };
 
   return (
     <div
       ref={containerRef}
-      className="sticky top-0 text-start bg-[#FFF3E7] text-[#3B2C27] overflow-hidden cursor-pointer py-25 2xl:py-50 px-6 sm:px-10 lg:px-16 xl:px-24"
+      className="sticky  top-0 text-start bg-[#FFF3E7] text-[#3B2C27] overflow-hidden cursor-crosshair py-24 px-6 sm:px-10 lg:px-16 xl:px-24"
       onMouseMove={handleMouseMove}
     >
-      {/* Main Text */}
       <SplitText
         delay={50}
         duration={0.3}
@@ -87,7 +95,7 @@ const HoverImageBurst = () => {
         to={{ opacity: 1, y: 0 }}
         threshold={0.1}
         rootMargin="-100px"
-        className="text-4xl sm:text-5xl text-start md:text-6xl lg:text-7xl xl:text-8xl font-semibold leading-tight"
+        className="text-4xl sm:text-5xl text-start md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight"
       >
         <h1>
           Strong coffee, stronger you — Chamberlain{" "}
